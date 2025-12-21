@@ -42,7 +42,7 @@ jobs:
       - name: Dump Qlib Data
         run: |
           ls -l $GITHUB_WORKSPACE
-          sudo bash $GITHUB_WORKSPACE/dump_qlib_bin.sh investment_data_work
+          sudo bash $GITHUB_WORKSPACE/dump_qlib_bin.sh $GITHUB_WORKSPACE/investment_data_work
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
