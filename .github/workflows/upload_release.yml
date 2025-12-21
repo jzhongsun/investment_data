@@ -22,8 +22,8 @@ jobs:
       run: echo "date=${{ steps.t1.outputs.time }}" >> $GITHUB_OUTPUT
     - name: Dump Qlib Data
       run: |
-        ls -l
-        bash ./dump_qlib_bin.sh
+        ls -la $GITHUB_WORKSPACE
+        bash $GITHUB_WORKSPACE/dump_qlib_bin.sh
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
