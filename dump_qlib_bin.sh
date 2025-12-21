@@ -21,7 +21,7 @@ fi
 # 4. 【核心改动】启动无磁盘占用的远程 SQL 服务
 # --remote-url 直接指向远端，Dolt 将以只读流式模式运行，本地不产生数据库文件
 # 如果是私有库，请确保环境变量中包含 DOLTHUB_API_TOKEN
-dolt sql-server --remote-url chenditc/investment_data --host 0.0.0.0 --port 3306 &
+dolt sql-server --remote-url=chenditc/investment_data --host=0.0.0.0 --port=3306 &
 
 # 5. 等待 SQL Server 端口就绪
 echo "Waiting for Dolt Remote Server to start..."
