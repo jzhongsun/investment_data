@@ -9,6 +9,29 @@ then
     curl -L https://github.com/dolthub/dolt/releases/latest/download/install.sh | bash
 fi
 
+# 2. 身份配置（防止启动报错）
+dolt config --global --add user.email "action@github.com"
+dolt config --global --add user.name "GitHub Action"
+
+# 3. 创建“影子”数据目录（仅存储元数据，不存储表数据）
+# 严格不在 WORKING_DIR 下下载大数据
+PROXY_DATA_DIR="$HOME/dolt_metadata"
+mkdir -p "$PROXY_DATA_DIR/investment_data"
+cd "$PROXY_DATA_DIR/investment_data"
+
+# 初始化一个空库并关联远程
+dolt init
+dolt remote add origin chenditc/investment_data
+# 重点：fetch 只拉取索引/元数据，不下载数据文件
+dolt fetch origin master
+dolt checkout -f master || dolt checkout -b master origin/master
+
+# 4. 启动 SQL Server
+# --data-dir 指向我们刚才建立的“影子”目录
+# -r (readonly) 确保不会因为意外写入产生本地文件
+dolt sql-server --data-dir "$PROXY_DATA_DIR" --host 0.0.0.0 --port 3306 -r &
+
+
 # 2. 准备工作目录（仅用于代码，不用于存储数据库）
 mkdir -p "$WORKING_DIR"
 cd "$WORKING_DIR"
@@ -18,10 +41,6 @@ if [ ! -d "$WORKING_DIR/qlib" ]; then
     git clone "$QLIB_REPO" "$WORKING_DIR/qlib"
 fi
 
-# 4. 【核心改动】启动无磁盘占用的远程 SQL 服务
-# --remote-url 直接指向远端，Dolt 将以只读流式模式运行，本地不产生数据库文件
-# 如果是私有库，请确保环境变量中包含 DOLTHUB_API_TOKEN
-dolt sql-server --remote-url=chenditc/investment_data --host=0.0.0.0 --port=3306 &
 
 # 5. 等待 SQL Server 端口就绪
 echo "Waiting for Dolt Remote Server to start..."
