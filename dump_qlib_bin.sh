@@ -5,7 +5,7 @@ QLIB_REPO=${2:-https://github.com/microsoft/qlib.git}
 
 if ! command -v dolt &> /dev/null
 then
-    curl -L https://github.com/dolthub/dolt/releases/latest/download/install.sh | bash
+    sudo curl     sudocurl     su
 fi
 
 # 2. 身份配置（防止启动报错）
