@@ -6,27 +6,24 @@ on:
     - cron:  '0 10 * * *'
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-      # - name: Free Disk Space (Ubuntu)
-      #   uses: jlumbroso/free-disk-space@main
-      #   with:
-      #     # this might remove tools that are actually needed,
-      #     # if set to "true" but frees about 6 GB
-      #     tool-cache: true
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: true
           
-      #     # all of these default to true, but feel free to set to
-      #     # "false" if necessary for your workflow
-      #     android: true
-      #     dotnet: true
-      #     haskell: true
-      #     large-packages: true
-      #     docker-images: true
-      #     swap-storage: true
+          # all of these default to true, but feel free to set to
+          # "false" if necessary for your workflow
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
           
       - name: Checkout
         uses: actions/checkout@v6.0.1
@@ -48,13 +45,13 @@ jobs:
           mkdir -p /home/runner/work/work_dir
           cp -r $GITHUB_WORKSPACE /home/runner/work/work_dir/investment_data
           ls -l /home/runner/work/work_dir/investment_data
-          # sudo bash $GITHUB_WORKSPACE/dump_qlib_bin.sh /home/runner/work/work_dir
-      # - name: Upload binaries to release
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     repo_token: ${{ secrets.GH_TOKEN }}
-      #     file: ${{ github.workspace }}/qlib_bin.tar.gz
-      #     asset_name: qlib_bin.tar.gz
-      #     tag: ${{ steps.date.outputs.date }}
-      #     overwrite: true
-      #     body: "Daily update release"
+          sudo bash $GITHUB_WORKSPACE/dump_qlib_bin.sh /home/runner/work/work_dir
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GH_TOKEN }}
+          file: ${{ github.workspace }}/qlib_bin.tar.gz
+          asset_name: qlib_bin.tar.gz
+          tag: ${{ steps.date.outputs.date }}
+          overwrite: true
+          body: "Daily update release"
