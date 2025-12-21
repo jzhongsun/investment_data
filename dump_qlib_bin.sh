@@ -8,6 +8,10 @@ then
     curl -L https://github.com/dolthub/dolt/releases/latest/download/install.sh | bash
 fi
 
+# 2. 身份配置（防止启动报错）
+dolt config --global --add user.email "action@github.com"
+dolt config --global --add user.name "GitHub Action"
+
 mkdir -p $WORKING_DIR/dolt
 
 [ ! -d "$WORKING_DIR/dolt/investment_data" ] && cd $WORKING_DIR/dolt && dolt clone chenditc/investment_data
