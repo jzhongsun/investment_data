@@ -41,10 +41,11 @@ jobs:
           WORKING_DIR: $GITHUB_WORKSPACE/../
         run: |
           ls -l $GITHUB_WORKSPACE
-          pip install -r requirements.txt
+          pip3 install -r requirements.txt
           mkdir -p /home/runner/work/work_dir
           cp -r $GITHUB_WORKSPACE /home/runner/work/work_dir/investment_data
           ls -l /home/runner/work/work_dir/investment_data
+          pip3 install sqlalchemy
           sudo bash $GITHUB_WORKSPACE/dump_qlib_bin.sh /home/runner/work/work_dir
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
