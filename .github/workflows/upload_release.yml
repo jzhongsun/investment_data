@@ -46,7 +46,7 @@ jobs:
           cp -r $GITHUB_WORKSPACE /home/runner/work/work_dir/investment_data
           ls -l /home/runner/work/work_dir/investment_data
           pip3 install sqlalchemy
-          sudo bash $GITHUB_WORKSPACE/dump_qlib_bin.sh /home/runner/work/work_dir
+          bash $GITHUB_WORKSPACE/dump_qlib_bin.sh /home/runner/work/work_dir
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
