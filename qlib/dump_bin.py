@@ -309,7 +309,7 @@ class DumpDataAll(DumpDataBase):
         date_range_list = []
         _fun = partial(self._get_date, as_set=True, is_begin_end=True)
         with tqdm(total=len(self.df_files)) as p_bar:
-            with ProcessPoolExecutor(max_workers=self.works) as executor:
+            with ThreadPoolExecutor(max_workers=self.works) as executor:
                 for file_path, ((_begin_time, _end_time), _set_calendars) in zip(
                     self.df_files, executor.map(_fun, self.df_files)
                 ):
@@ -340,7 +340,7 @@ class DumpDataAll(DumpDataBase):
         logger.info("start dump features......")
         _dump_func = partial(self._dump_bin, calendar_list=self._calendars_list)
         with tqdm(total=len(self.df_files)) as p_bar:
-            with ProcessPoolExecutor(max_workers=self.works) as executor:
+            with ThreadPoolExecutor(max_workers=self.works) as executor:
                 for _ in executor.map(_dump_func, self.df_files):
                     p_bar.update()
 
@@ -364,7 +364,7 @@ class DumpDataFix(DumpDataAll):
             )
         )
         with tqdm(total=len(new_stock_files)) as p_bar:
-            with ProcessPoolExecutor(max_workers=self.works) as execute:
+            with ThreadPoolExecutor(max_workers=self.works) as execute:
                 for file_path, (_begin_time, _end_time) in zip(new_stock_files, execute.map(_fun, new_stock_files)):
                     if isinstance(_begin_time, pd.Timestamp) and isinstance(_end_time, pd.Timestamp):
                         symbol = self.get_symbol_from_file(file_path).upper()
@@ -493,7 +493,7 @@ class DumpDataUpdate(DumpDataBase):
     def _dump_features(self):
         logger.info("start dump features......")
         error_code = {}
-        with ProcessPoolExecutor(max_workers=self.works) as executor:
+        with ThreadPoolExecutor(max_workers=self.works) as executor:
             futures = {}
             for _code, _df in self._all_data.groupby(self.symbol_field_name, group_keys=False):
                 _code = fname_to_code(str(_code).lower()).upper()
