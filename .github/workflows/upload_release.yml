@@ -45,7 +45,7 @@ jobs:
           mkdir -p /home/runner/work/work_dir
           cp -r $GITHUB_WORKSPACE /home/runner/work/work_dir/investment_data
           ls -l /home/runner/work/work_dir/investment_data
-          pip3 install sqlalchemy
+          pip3 install sqlalchemy pyqlib tqdm yahooquery requests fire loguru
           bash $GITHUB_WORKSPACE/dump_qlib_bin.sh /home/runner/work/work_dir
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
