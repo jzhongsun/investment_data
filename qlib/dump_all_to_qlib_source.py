@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 import pymysql
 import pandas as pd
 import fire
@@ -31,9 +31,9 @@ def dump_all_to_qlib_source(skip_exists=True):
         # Use parameterized query to avoid SQL injection and to let pandas/SQLAlchemy
         # handle proper quoting/typing
         df = pd.read_sql(
-            "SELECT *, amount/volume*10 AS vwap FROM final_a_stock_eod_price WHERE symbol = %s",
+            text("SELECT *, amount/volume*10 AS vwap FROM final_a_stock_eod_price WHERE symbol = :symbol"),
             engine,
-            params=[symbol]
+            params={"symbol": symbol}
         )
         df.to_csv(filename, index=False)
 
