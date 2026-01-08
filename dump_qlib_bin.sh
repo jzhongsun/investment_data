@@ -5,34 +5,34 @@ QLIB_REPO=${2:-https://github.com/microsoft/qlib.git}
 
 echo "Working directory: $(pwd)"
 
-# if ! command -v dolt &> /dev/null
-# then
-#     curl -L https://github.com/dolthub/dolt/releases/latest/download/install.sh | sudo bash
-# fi
+if ! command -v dolt &> /dev/null
+then
+    curl -L https://github.com/dolthub/dolt/releases/latest/download/install.sh | sudo bash
+fi
 
-# # 2. 身份配置（防止启动报错）
-# dolt config --global --add user.email "action@github.com"
-# dolt config --global --add user.name "GitHub Action"
+# 2. 身份配置（防止启动报错）
+dolt config --global --add user.email "action@github.com"
+dolt config --global --add user.name "GitHub Action"
 
-# mkdir -p $WORKING_DIR/dolt
+mkdir -p $WORKING_DIR/dolt
 
-# if [ ! -d "$WORKING_DIR/dolt/investment_data" ]; then
-#     cd $WORKING_DIR/dolt && dolt clone chenditc/investment_data
-# else
-#     cd $WORKING_DIR/dolt/investment_data
-#     dolt pull origin master
-# fi
-# [ ! -d "$WORKING_DIR/qlib" ] && git clone $QLIB_REPO "$WORKING_DIR/qlib"
+if [ ! -d "$WORKING_DIR/dolt/investment_data" ]; then
+    cd $WORKING_DIR/dolt && dolt clone chenditc/investment_data
+else
+    cd $WORKING_DIR/dolt/investment_data
+    dolt pull origin master
+fi
+[ ! -d "$WORKING_DIR/qlib" ] && git clone $QLIB_REPO "$WORKING_DIR/qlib"
 
-# cd $WORKING_DIR/dolt/investment_data
-# dolt sql-server &
+cd $WORKING_DIR/dolt/investment_data
+dolt sql-server &
 
-# # wait for sql server start
-# sleep 5s
+# wait for sql server start
+sleep 5s
 
-# cd $WORKING_DIR/investment_data
-# mkdir -p ./qlib/qlib_source
-# python3 ./qlib/dump_all_to_qlib_source.py
+cd $WORKING_DIR/investment_data
+mkdir -p ./qlib/qlib_source
+python3 ./qlib/dump_all_to_qlib_source.py
 pip install pyqlib tqdm yahooquery requests fire loguru
 export PYTHONPATH=$PYTHONPATH:$WORKING_DIR/qlib/scripts
 cd ./qlib
