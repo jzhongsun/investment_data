@@ -56,3 +56,30 @@ jobs:
           tag: ${{ steps.date.outputs.date }}
           overwrite: true
           body: "Daily update release"
+
+      - name: Upload to modelscope dataset
+        env:
+          MODELSCOPE_TOKEN: ${{ secrets.MODELSCOPE_TOKEN }}
+          MODELSCOPE_DATASET_NAME: ${{ secrets.MODELSCOPE_DATASET_NAME }}
+        run: |
+          pip3 install modelscope        
+          modelscope login --token="$MODELSCOPE_TOKEN"
+          modelscope upload "$MODELSCOPE_DATASET_NAME" /home/runner/work/work_dir/investment_data/qlib_bin.tar.gz qlib_bin.tar.gz --repo-type dataset
+
+      - name: Send POST request via curl
+        env:
+          WEBHOOK_URL: ${{ secrets.BUILD_WEBHOOK_URL }}
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{"key": "value"}' \
+            ${{ secrets.BUILD_WEBHOOK_URL }}
+
+      - name: Send Ding message via curl
+        env:
+          DING_WEBHOOK_URL: ${{ secrets.DING_WEBHOOK_URL }}
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{"msgtype": "markdown", "markdown": {"title": "Qlib-daily:-QLIB DATA Updated", "text": "QLIB DATA  Updated"}}' \
+            ${{ secrets.DING_WEBHOOK_URL }}
