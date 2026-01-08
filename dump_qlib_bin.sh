@@ -3,6 +3,8 @@ set -x
 WORKING_DIR=${1} 
 QLIB_REPO=${2:-https://github.com/microsoft/qlib.git} 
 
+echo "Working directory: $(pwd)"
+
 # if ! command -v dolt &> /dev/null
 # then
 #     curl -L https://github.com/dolthub/dolt/releases/latest/download/install.sh | sudo bash
@@ -31,9 +33,8 @@ QLIB_REPO=${2:-https://github.com/microsoft/qlib.git}
 # cd $WORKING_DIR/investment_data
 # mkdir -p ./qlib/qlib_source
 # python3 ./qlib/dump_all_to_qlib_source.py
-
+pip install pyqlib tqdm
 export PYTHONPATH=$PYTHONPATH:$WORKING_DIR/qlib/scripts
-cp -r $WORKING_DIR/qlib/scripts/* ./qlib/
 cd ./qlib
 python3 ./normalize.py normalize_data --source_dir ./qlib_source/ --normalize_dir ./qlib_normalize --max_workers=16 --date_field_name="tradedate" 
 python3 ./dump_bin.py dump_all --data_path ./qlib_normalize/ --qlib_dir $WORKING_DIR/qlib_bin --date_field_name=tradedate --exclude_fields=tradedate,symbol
