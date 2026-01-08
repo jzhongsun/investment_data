@@ -14,11 +14,15 @@ dolt config --global --add user.name "GitHub Action"
 
 mkdir -p $WORKING_DIR/dolt
 
-[ ! -d "$WORKING_DIR/dolt/investment_data" ] && cd $WORKING_DIR/dolt && dolt clone --depth 1 chenditc/investment_data
+if [ ! -d "$WORKING_DIR/dolt/investment_data" ]; then
+    cd $WORKING_DIR/dolt && dolt clone chenditc/investment_data
+else
+    cd $WORKING_DIR/dolt/investment_data
+    dolt pull origin master
+fi
 [ ! -d "$WORKING_DIR/qlib" ] && git clone $QLIB_REPO "$WORKING_DIR/qlib"
 
 cd $WORKING_DIR/dolt/investment_data
-dolt pull origin master
 dolt sql-server &
 
 # wait for sql server start
