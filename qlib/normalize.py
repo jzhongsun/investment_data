@@ -2,8 +2,8 @@ import fire
 import pandas as pd
 
 try:
-  from data_collector.base import Normalize
-  from data_collector.yahoo import collector as yahoo_collector
+  from base import Normalize
+  import collector as yahoo_collector
 except ImportError as e:
   print("============")
   print("ATTENTION: Need to put qlib/scripts directory into PYTHONPATH")
