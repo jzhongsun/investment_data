@@ -33,7 +33,7 @@ echo "Working directory: $(pwd)"
 # cd $WORKING_DIR/investment_data
 # mkdir -p ./qlib/qlib_source
 # python3 ./qlib/dump_all_to_qlib_source.py
-pip install pyqlib tqdm
+pip install pyqlib tqdm yahooquery requests fire loguru
 export PYTHONPATH=$PYTHONPATH:$WORKING_DIR/qlib/scripts
 cd ./qlib
 python3 ./normalize.py normalize_data --source_dir ./qlib_source/ --normalize_dir ./qlib_normalize --max_workers=16 --date_field_name="tradedate" 
