@@ -47,7 +47,7 @@ killall dolt
 
 cp qlib/qlib_index/csi* $WORKING_DIR/qlib_bin/instruments/
 
-tar -czvf ./qlib_bin.tar.gz $WORKING_DIR/qlib_bin/
+tar -czvf ./qlib_bin.tar.gz -C "$WORKING_DIR" qlib_bin
 ls -lh ./qlib_bin.tar.gz
 OUTPUT_DIR=${OUTPUT_DIR:-/output}
 if [ -d "${OUTPUT_DIR}" ]; then
